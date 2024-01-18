@@ -1,9 +1,11 @@
 package com.devsuperior.dscommerece.controllers;
 
+import com.devsuperior.dscommerece.dto.CustomError;
 import com.devsuperior.dscommerece.dto.ProductDTO;
 
 import com.devsuperior.dscommerece.entities.Product;
 import com.devsuperior.dscommerece.services.ProductService;
+import com.devsuperior.dscommerece.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.Instant;
 import java.util.List;
 
 
@@ -22,10 +25,9 @@ public class ProductController {
     @Autowired
     private ProductService service;
    @GetMapping(value="/{id}")
-     public ResponseEntity <ProductDTO > findById(@PathVariable Long id){
-       ProductDTO dto = service.findById(id);
-       return ResponseEntity.ok(dto);
-
+     public ResponseEntity <ProductDTO> findById(@PathVariable Long id){
+           ProductDTO dto = service.findById(id);
+           return ResponseEntity.ok(dto);
     }
 
     @GetMapping
@@ -47,7 +49,7 @@ public class ProductController {
 
     }
     @DeleteMapping(value="/{id}")
-    public ResponseEntity <Void > update(@PathVariable Long id){
+    public ResponseEntity <Void > delete(@PathVariable Long id){
          service.delete(id);
         return ResponseEntity.noContent().build();
 

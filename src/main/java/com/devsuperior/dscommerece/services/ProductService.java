@@ -3,6 +3,7 @@ package com.devsuperior.dscommerece.services;
 import com.devsuperior.dscommerece.dto.ProductDTO;
 import com.devsuperior.dscommerece.entities.Product;
 import com.devsuperior.dscommerece.repositories.ProductRepository;
+import com.devsuperior.dscommerece.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,9 +20,12 @@ public class ProductService {
    private ProductRepository repository;
 
     @Transactional(readOnly = true)
-    public ProductDTO findById(Long id){
-        Product product = repository.findById(id).get();
-        return new ProductDTO(product);
+    public ProductDTO findById(Long id) {
+
+            Product product = repository.findById(id).orElseThrow(
+                    ()->new ResourceNotFoundException("Recurso não encontrado."));
+            return new ProductDTO(product);
+
     }
 
     /*
