@@ -1,6 +1,6 @@
 package com.devsuperior.dscommerece.entities;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.time.Instant;
 import java.util.HashSet;
