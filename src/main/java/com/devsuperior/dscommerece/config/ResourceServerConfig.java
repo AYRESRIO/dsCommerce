@@ -16,13 +16,13 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
-
+	
 	@Autowired
 	private Environment env;
-
+	
 	@Autowired
 	private JwtTokenStore tokenStore;
-
+	
 	@Override
 	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
 		resources.tokenStore(tokenStore);
@@ -35,10 +35,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
 			http.headers().frameOptions().disable();
 		}
-
+		
 		http.authorizeRequests().anyRequest().permitAll();
 		
-
 	}
-
+	
 }
