@@ -1,10 +1,15 @@
 package com.devsuperior.dscommerece.services;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.devsuperior.dscommerece.dto.UserDTO;
 import com.devsuperior.dscommerece.entities.User;
 import com.devsuperior.dscommerece.repositories.UserRepository;
 
@@ -22,5 +27,21 @@ public class UserService implements UserDetailsService {
 		}
 		return user;
 	}
+	
+	protected User authenticated() {
+		try {
+			String username = SecurityContextHolder.getContext().getAuthentication().getName();
+			return repository.findByEmail(username);
+		}
+		catch(Exception e) {
+			throw new  UsernameNotFoundException("Invalid user");
+		}
+	}
+	@Transactional(readOnly = true)
+	public UserDTO getMe() {
+		User entity = authenticated();
+		return new UserDTO(entity);
+	}
 
 }
+	
