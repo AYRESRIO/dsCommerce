@@ -18,7 +18,7 @@ import com.devsuperior.dscommerece.entities.Category;
 import com.devsuperior.dscommerece.entities.Product;
 import com.devsuperior.dscommerece.repositories.ProductRepository;
 import com.devsuperior.dscommerece.services.exceptions.DatabaseException;
-import com.devsuperior.dscommerece.services.exceptions.ResourceNotFoundException;
+import com.devsuperior.dscommerece.services.exceptions.ResourceNotFindException;
 
 @Service
 public class ProductService {
@@ -30,7 +30,7 @@ public class ProductService {
 	public ProductDTO findById(Long id) {
 
 		Product product = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado."));
+				.orElseThrow(() -> new ResourceNotFindException("Recurso não encontrado."));
 		return new ProductDTO(product);}
 	
 	@Transactional(readOnly = true)
@@ -57,7 +57,7 @@ public class ProductService {
 			return new ProductDTO(entity);
 
 		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException("Recurso não encontrado.");
+			throw new ResourceNotFindException("Recurso não encontrado.");
 		}
 	}
 
@@ -66,7 +66,7 @@ public class ProductService {
 		try {
 			repository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException("Recurso não encontrado.");
+			throw new ResourceNotFindException("Recurso não encontrado.");
 		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException("Falha de integridade referencial");
 		}
