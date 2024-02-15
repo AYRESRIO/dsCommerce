@@ -1,9 +1,9 @@
 package com.devsuperior.dscommerece.services.exceptions;
 
-public class ResourceNotFoundException extends RuntimeException{
-    public ResourceNotFoundException(String msg){
+public class ResourceNotFoundException extends RuntimeException {
+	private static final long serialVersionUID = 1L;
 
-        super(msg);
-
-    };
+	public ResourceNotFoundException(String msg) {
+		super(msg);
+	}
 }

@@ -25,16 +25,25 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 @Table(name = "tb_user")
 public class User implements UserDetails {
+	
 	private static final long serialVersionUID = 1L;
+	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	private String name;
+	
 	@Column(unique = true)
 	private String email;
+	
 	private String phone;
+	
 	private LocalDate birthDate;
+	
 	private String password;
+	
 
 	@OneToMany(mappedBy = "client")
 	private List<Order> orders = new ArrayList<>();
@@ -113,36 +122,54 @@ public class User implements UserDetails {
 	public Set<Role> getRoles(){
 		return roles;
 	}
+	
+	public boolean hasRole(String roleName) {
+		
+		for(Role role : roles) {
+			if(role.getAuthority().equals(roleName)) {
+				
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		
 		return roles;
 	}
+	
 
 	@Override
 	public String getUsername() {
 		
 		return email;
 	}
+	
 
 	@Override
 	public boolean isAccountNonExpired() {
 		
 		return true;
 	}
+	
 
 	@Override
 	public boolean isAccountNonLocked() {
 		
 		return true;
 	}
+	
 
 	@Override
 	public boolean isCredentialsNonExpired() {
 		
 		return true;
 	}
+	
 
 	@Override
 	public boolean isEnabled() {
