@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.devsuperior.dscommerece.dto.CustomError;
 import com.devsuperior.dscommerece.services.exceptions.DatabaseException;
+import com.devsuperior.dscommerece.services.exceptions.ForbiddenException;
 import com.devsuperior.dscommerece.services.exceptions.ResourceNotFindException;
 
 @ControllerAdvice
@@ -38,7 +39,7 @@ public class ControllerExceptionHandler {
         HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
         ValidationError err = new ValidationError(Instant.now(),status.value(),"Dados inválidos.",request.getRequestURI());
         
-        
+   
         for(FieldError f : e.getBindingResult().getFieldErrors()){
 
             err.addError(f.getField(), f.getDefaultMessage());
@@ -46,5 +47,13 @@ public class ControllerExceptionHandler {
 
         return ResponseEntity.status(status).body(err);
     }
+    
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<CustomError> forbidden(ForbiddenException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        CustomError err = new CustomError(Instant.now(),status.value(),e.getMessage(),request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
+
     
 }
