@@ -35,6 +35,7 @@ public class OrderController {
 		return ResponseEntity.ok(dto);
 	}
 	
+	
 	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PostMapping
 	public ResponseEntity<OrderDTO> insert(@Valid @RequestBody OrderDTO dto) {
@@ -44,5 +45,6 @@ public class OrderController {
 				.buildAndExpand(dto.getId()).toUri();
 		
 		return ResponseEntity.created(uri).body(dto);
+		
 	}
 }
